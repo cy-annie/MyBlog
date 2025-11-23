@@ -1,0 +1,81 @@
+---
+title: "Monitoramento de Frota de Ônibus"
+author: "Thacyane Silva"
+date: "2025-11-21"
+categories: [Monitoramento, Ônibus, Python]
+image: "https://th.bing.com/th/id/OIP.7s6APgs98LuG6hdUTOspkAHaD5?w=326&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+jupyter: python3
+---
+
+Neste post irei mostar uma rotina em **Python** para consultar a API de **transporte público**. Além disso, o código exibirá em **tempo real** a **localização** dos ônibus no momento da execução.
+
+Autenticação (Token SPTrans)
+
+```{python}
+import requests
+from folium import Map, Marker
+from IPython.display import display
+
+TOKEN = "5bb9954b06a45ebf22baf7daa6d32a35f32c1bba819731793229d6bc482a8bcb"
+
+# Autenticação na API
+s = requests.Session()
+x = s.post(f"http://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar?token={TOKEN}")
+print("Autenticação:", x.text)  # deve retornar True
+```
+
+Buscar Parada de Linha
+
+```{python}
+# Buscar paradas da linha escolhida (2506)
+paradas = s.get("http://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha?codigoLinha=2506").json()
+
+if paradas:
+    print("Total de paradas encontradas:", len(paradas))
+    print("Primeiras paradas:", paradas[:3])
+else:
+    print("Nenhuma parada encontrada para a linha 2506")
+```
+
+Mapa (Paradas)
+
+```{python}
+if paradas:
+    m = Map(location=[paradas[0]["py"], paradas[0]["px"]], zoom_start=14)
+
+    for p in paradas:
+        Marker(location=[p["py"], p["px"]], popup=p["np"]).add_to(m)
+
+    # Mostrar mapa diretamente no Preview
+    display(m)
+```
+
+Posição do ônibus em Tempo Real
+
+```{python}
+posicoes = s.get("http://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha?codigoLinha=2506").json()
+
+if "vs" in posicoes:
+    print("Total de ônibus em movimento:", len(posicoes["vs"]))
+    print("Primeiros ônibus:", posicoes["vs"][:3])
+else:
+    print("Nenhum ônibus encontrado em tempo real")
+```
+
+Mapa com Parada e Onibus em Tempo Real
+
+```{python}
+if paradas and "vs" in posicoes:
+    m = Map(location=[paradas[0]["py"], paradas[0]["px"]], zoom_start=14)
+
+    # Paradas (azul)
+    for p in paradas:
+        Marker(location=[p["py"], p["px"]], popup=p["np"]).add_to(m)
+
+    # Ônibus em tempo real (vermelho)
+    for v in posicoes["vs"]:
+        Marker(location=[v["py"], v["px"]], popup=f"Ônibus {v['p']}").add_to(m)
+
+    # Mostrar mapa diretamente no Preview
+    display(m)
+```

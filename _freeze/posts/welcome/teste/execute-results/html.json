@@ -1,0 +1,12 @@
+{
+  "hash": "aceae5b9ee8f688d29d3e655d40ca5cd",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"Teste Python\"\nformat: html\n---\n\n::: {#9ce68c43 .cell execution_count=1}\n``` {.python .cell-code}\nprint(\"Rodando em Python no Quarto!\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nRodando em Python no Quarto!\n```\n:::\n:::\n\n\n",
+    "supporting": [
+      "teste_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

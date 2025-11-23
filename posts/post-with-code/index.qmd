@@ -1,0 +1,64 @@
+---
+title: "Cotação do Dólar"
+author: "Thacyane Silva"
+date: "2025-11-20"
+categories: [API, Code, Python]
+image: "https://th.bing.com/th/id/OIP.PShnchyt8kpqeMzQDeQXOwHaHa?w=192&h=192&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
+jupyter: python3
+---
+
+Nesse post mostro como criar uma função em **Python** que recebe uma string "MMYYYY", calcula o período do mês, consulta a API de **cotação do dólar** e exibe os dados em um **gráfico de linha** com **Plotly**.
+
+Importação da Biblioteca
+
+```{python}
+import requests
+import pandas as pd
+import calendar
+from datetime import datetime
+import plotly.express as px
+
+```
+
+Função Principal
+
+```{python}
+def cotacao_dolar_periodo(mes_ano: str):
+    # 2.1 Converter string "MMYYYY" em datas inicial e final
+    first_date = datetime.strptime(mes_ano, "%m%Y")
+    last_day = calendar.monthrange(first_date.year, first_date.month)[1]
+    last_date = first_date.replace(day=last_day)
+
+    # 2.2 Formatar datas para API (MM-DD-YYYY)
+    data_inicial = first_date.strftime("%m-%d-%Y")
+    data_final = last_date.strftime("%m-%d-%Y")
+
+    # 2.3 Montar URL da API PTAX
+    url = (
+        f"https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/"
+        f"CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?"
+        f"@dataInicial='{data_inicial}'&@dataFinalCotacao='{data_final}'&$top=10000&$format=json"
+    )
+
+    # 2.4 Requisição e tratamento dos dados
+    response = requests.get(url)
+    dados = response.json()["value"]
+
+    # 2.5 Converter para DataFrame
+    df = pd.DataFrame(dados)
+    df["dataHoraCotacao"] = pd.to_datetime(df["dataHoraCotacao"])
+    df = df.sort_values("dataHoraCotacao")
+
+    # 2.6 Gerar gráfico de linha com Plotly
+    fig = px.line(df, x="dataHoraCotacao", y="cotacaoCompra",
+                  title=f"Cotação do Dólar - {mes_ano}",
+                  labels={"cotacaoCompra": "Cotação (R$)", "dataHoraCotacao": "Data"})
+    fig.show()
+```
+
+Exemplo de Execução
+
+```{python}
+# Exemplo: Julho de 2011
+cotacao_dolar_periodo("072011")
+```
