@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Thacyane Silva">
+<meta name="dcterms.date" content="2025-11-21">
+
+<title>Monitoramento de Frota de Ônibus – MyBlog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-db808e44303083b5eb8e7949e0c59488.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">MyBlog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Monitoramento de Frota de Ônibus</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Monitoramento</div>
+                <div class="quarto-category">Ônibus</div>
+                <div class="quarto-category">Python</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thacyane Silva </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 21, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>Neste post irei mostar uma rotina em <strong>Python</strong> para consultar a API de <strong>transporte público</strong>. Além disso, o código exibirá em <strong>tempo real</strong> a <strong>localização</strong> dos ônibus no momento da execução.</p>
+<p>Autenticação (Token SPTrans)</p>
+<div id="452aceca" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> folium <span class="im">import</span> Map, Marker</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>TOKEN <span class="op">=</span> <span class="st">"5bb9954b06a45ebf22baf7daa6d32a35f32c1bba819731793229d6bc482a8bcb"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Autenticação na API</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> requests.Session()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> s.post(<span class="ss">f"http://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar?token=</span><span class="sc">{</span>TOKEN<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Autenticação:"</span>, x.text)  <span class="co"># deve retornar True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Autenticação: true</code></pre>
+</div>
+</div>
+<p>Buscar Parada de Linha</p>
+<div id="24260810" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Buscar paradas da linha escolhida (2506)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>paradas <span class="op">=</span> s.get(<span class="st">"http://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha?codigoLinha=2506"</span>).json()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> paradas:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Total de paradas encontradas:"</span>, <span class="bu">len</span>(paradas))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Primeiras paradas:"</span>, paradas[:<span class="dv">3</span>])</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Nenhuma parada encontrada para a linha 2506"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total de paradas encontradas: 15
+Primeiras paradas: [{'cp': 7014417, 'np': 'ANGELICA B/C', 'ed': 'AV   ANGELICA', 'py': -23.534564, 'px': -46.654302}, {'cp': 60016784, 'np': 'PARADA PALMEIRAS B/C', 'ed': 'R PADRE ANTONIO TOMAS/ AV POMPEIA', 'py': -23.525799, 'px': -46.679251}, {'cp': 60016786, 'np': 'ANTARTICA B/C', 'ed': 'PC SOUSA ARANHA/ VDTO ANTARTICA', 'py': -23.526523, 'px': -46.673588}]</code></pre>
+</div>
+</div>
+<p>Mapa (Paradas)</p>
+<div id="53cad333" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> paradas:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> Map(location<span class="op">=</span>[paradas[<span class="dv">0</span>][<span class="st">"py"</span>], paradas[<span class="dv">0</span>][<span class="st">"px"</span>]], zoom_start<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> paradas:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        Marker(location<span class="op">=</span>[p[<span class="st">"py"</span>], p[<span class="st">"px"</span>]], popup<span class="op">=</span>p[<span class="st">"np"</span>]).add_to(m)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mostrar mapa diretamente no Preview</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    display(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
+    <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
+    <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
+    <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
+    <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
+    
+            <meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
+            <style>
+                #map_069f863600efbb711bd4d72a98537802 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class=&quot;folium-map&quot; id=&quot;map_069f863600efbb711bd4d72a98537802&quot; ></div>
+        
+</body>
+<script>
+    
+    
+            var map_069f863600efbb711bd4d72a98537802 = L.map(
+                &quot;map_069f863600efbb711bd4d72a98537802&quot;,
+                {
+                    center: [-23.534564, -46.654302],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 14,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_69256c0720478b42e7697683d1830787 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            tile_layer_69256c0720478b42e7697683d1830787.addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+            var marker_e99756a6615186a059358ddf7b5bea53 = L.marker(
+                [-23.534564, -46.654302],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_9cfe4bf44611faf62f2e1b47cef4af0e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_16f470e80c5bd1e829505e20d5dc6415 = $(`<div id=&quot;html_16f470e80c5bd1e829505e20d5dc6415&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>ANGELICA B/C</div>`)[0];
+                popup_9cfe4bf44611faf62f2e1b47cef4af0e.setContent(html_16f470e80c5bd1e829505e20d5dc6415);
+            
+        
+
+        marker_e99756a6615186a059358ddf7b5bea53.bindPopup(popup_9cfe4bf44611faf62f2e1b47cef4af0e)
+        ;
+
+        
+    
+    
+            var marker_510bda4e3628d0627c9717afd8357b56 = L.marker(
+                [-23.525799, -46.679251],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_54c0225a47d66dde61a02b728d359891 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_2357bd0d8fb0e0f3cf46145b3a19bbe3 = $(`<div id=&quot;html_2357bd0d8fb0e0f3cf46145b3a19bbe3&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>PARADA PALMEIRAS B/C</div>`)[0];
+                popup_54c0225a47d66dde61a02b728d359891.setContent(html_2357bd0d8fb0e0f3cf46145b3a19bbe3);
+            
+        
+
+        marker_510bda4e3628d0627c9717afd8357b56.bindPopup(popup_54c0225a47d66dde61a02b728d359891)
+        ;
+
+        
+    
+    
+            var marker_ca58ac706069fb0a4e19c910e42e6a0f = L.marker(
+                [-23.526523, -46.673588],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_2c55952d518c01ca3d42f615c6a30c00 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_f8b6845487b5e01e9a2475eb0b2c091c = $(`<div id=&quot;html_f8b6845487b5e01e9a2475eb0b2c091c&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>ANTARTICA B/C</div>`)[0];
+                popup_2c55952d518c01ca3d42f615c6a30c00.setContent(html_f8b6845487b5e01e9a2475eb0b2c091c);
+            
+        
+
+        marker_ca58ac706069fb0a4e19c910e42e6a0f.bindPopup(popup_2c55952d518c01ca3d42f615c6a30c00)
+        ;
+
+        
+    
+    
+            var marker_4607eb950e0fff4854fd7326bd51e88c = L.marker(
+                [-23.528131, -46.670652],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_3b85613e0b56de59dc4e673c82160bdd = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_96749c1aa1b4f50486e108782cc8a22b = $(`<div id=&quot;html_96749c1aa1b4f50486e108782cc8a22b&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>BABY BARIONY B/C</div>`)[0];
+                popup_3b85613e0b56de59dc4e673c82160bdd.setContent(html_96749c1aa1b4f50486e108782cc8a22b);
+            
+        
+
+        marker_4607eb950e0fff4854fd7326bd51e88c.bindPopup(popup_3b85613e0b56de59dc4e673c82160bdd)
+        ;
+
+        
+    
+    
+            var marker_b4448ca4568fa2ae5cc43080a6a309bd = L.marker(
+                [-23.53021, -46.6669],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_d4b44e184c25f4fcea5f1240583ed09c = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_416160a3e76eb2a5d492a4d7127d22a6 = $(`<div id=&quot;html_416160a3e76eb2a5d492a4d7127d22a6&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>PQ. DA ÁGUA BRANCA B/C</div>`)[0];
+                popup_d4b44e184c25f4fcea5f1240583ed09c.setContent(html_416160a3e76eb2a5d492a4d7127d22a6);
+            
+        
+
+        marker_b4448ca4568fa2ae5cc43080a6a309bd.bindPopup(popup_d4b44e184c25f4fcea5f1240583ed09c)
+        ;
+
+        
+    
+    
+            var marker_e7e42b3fe1514cb9d1b9555f485ccd64 = L.marker(
+                [-23.52494, -46.698995],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_6c300682ffccbe97f6eca3c08ccf36a8 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_a02ce33d5ec2569d9166c991f7a84c2f = $(`<div id=&quot;html_a02ce33d5ec2569d9166c991f7a84c2f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>SCIPIAO B/C</div>`)[0];
+                popup_6c300682ffccbe97f6eca3c08ccf36a8.setContent(html_a02ce33d5ec2569d9166c991f7a84c2f);
+            
+        
+
+        marker_e7e42b3fe1514cb9d1b9555f485ccd64.bindPopup(popup_6c300682ffccbe97f6eca3c08ccf36a8)
+        ;
+
+        
+    
+    
+            var marker_a8d14f11f8a882e2a430ed20c76234b0 = L.marker(
+                [-23.524994, -46.695297],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_18ba0918137a41eeed3ee63470c5cb72 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_5bb875a28454391d53a075b2afb13c24 = $(`<div id=&quot;html_5bb875a28454391d53a075b2afb13c24&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>VESPASIANO B/C</div>`)[0];
+                popup_18ba0918137a41eeed3ee63470c5cb72.setContent(html_5bb875a28454391d53a075b2afb13c24);
+            
+        
+
+        marker_a8d14f11f8a882e2a430ed20c76234b0.bindPopup(popup_18ba0918137a41eeed3ee63470c5cb72)
+        ;
+
+        
+    
+    
+            var marker_79d1812f36e4524b23dd58b6ab523a2b = L.marker(
+                [-23.525029, -46.690074],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_e0548f5cb80dc69810f62890ed8a783e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_c5094e96b4a87ce992f15cfa1807d184 = $(`<div id=&quot;html_c5094e96b4a87ce992f15cfa1807d184&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>CORNELIA</div>`)[0];
+                popup_e0548f5cb80dc69810f62890ed8a783e.setContent(html_c5094e96b4a87ce992f15cfa1807d184);
+            
+        
+
+        marker_79d1812f36e4524b23dd58b6ab523a2b.bindPopup(popup_e0548f5cb80dc69810f62890ed8a783e)
+        ;
+
+        
+    
+    
+            var marker_291c483f5d6969bd66f5823cc276b399 = L.marker(
+                [-23.523407, -46.700541],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_c1aff0c051631bc2dd96d6106bae753d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_fc5bbfb97dc6417dc3ff2e850cf7c222 = $(`<div id=&quot;html_fc5bbfb97dc6417dc3ff2e850cf7c222&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>CATAO B/C</div>`)[0];
+                popup_c1aff0c051631bc2dd96d6106bae753d.setContent(html_fc5bbfb97dc6417dc3ff2e850cf7c222);
+            
+        
+
+        marker_291c483f5d6969bd66f5823cc276b399.bindPopup(popup_c1aff0c051631bc2dd96d6106bae753d)
+        ;
+
+        
+    
+    
+            var marker_ba776e3260e3d80431acaef4187918b0 = L.marker(
+                [-23.52517, -46.683408],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_36810f2a7768e16f8b6509e201af7ab3 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_69411effb1491c035e7aac3b0101698b = $(`<div id=&quot;html_69411effb1491c035e7aac3b0101698b&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>SESC POMPEIA B/C</div>`)[0];
+                popup_36810f2a7768e16f8b6509e201af7ab3.setContent(html_69411effb1491c035e7aac3b0101698b);
+            
+        
+
+        marker_ba776e3260e3d80431acaef4187918b0.bindPopup(popup_36810f2a7768e16f8b6509e201af7ab3)
+        ;
+
+        
+    
+    
+            var marker_8581d7b4d9f7f60020496b2aea5113df = L.marker(
+                [-23.540545, -46.643624],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_da9a734312d5e40a8eb55735c8d5b745 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_8d60aca4216fc470874c3b045a011d4b = $(`<div id=&quot;html_8d60aca4216fc470874c3b045a011d4b&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>VITORIA B/C</div>`)[0];
+                popup_da9a734312d5e40a8eb55735c8d5b745.setContent(html_8d60aca4216fc470874c3b045a011d4b);
+            
+        
+
+        marker_8581d7b4d9f7f60020496b2aea5113df.bindPopup(popup_da9a734312d5e40a8eb55735c8d5b745)
+        ;
+
+        
+    
+    
+            var marker_4261a3ad0fed20b6cb4d34f7e368da2c = L.marker(
+                [-23.532847, -46.657404],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_14ce2903ef96fae6221a98ead377b681 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_8cd56a599aa5e5596a4e449ac86e6133 = $(`<div id=&quot;html_8cd56a599aa5e5596a4e449ac86e6133&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>ROSA E SILVA C/B</div>`)[0];
+                popup_14ce2903ef96fae6221a98ead377b681.setContent(html_8cd56a599aa5e5596a4e449ac86e6133);
+            
+        
+
+        marker_4261a3ad0fed20b6cb4d34f7e368da2c.bindPopup(popup_14ce2903ef96fae6221a98ead377b681)
+        ;
+
+        
+    
+    
+            var marker_efb25e5d3b508d79542b47903db4286e = L.marker(
+                [-23.538708, -46.646888],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_f5d6b8458ac957abad36bea57f45c111 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_cde2ffdfa298037b6687a27dae042fbb = $(`<div id=&quot;html_cde2ffdfa298037b6687a27dae042fbb&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>ANA CINTRA B/C</div>`)[0];
+                popup_f5d6b8458ac957abad36bea57f45c111.setContent(html_cde2ffdfa298037b6687a27dae042fbb);
+            
+        
+
+        marker_efb25e5d3b508d79542b47903db4286e.bindPopup(popup_f5d6b8458ac957abad36bea57f45c111)
+        ;
+
+        
+    
+    
+            var marker_9e4e0fd94691be31b5f8a68e9e1d49c7 = L.marker(
+                [-23.532068, -46.660957],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_91e770264bf3c91b44ab30c126451a60 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_f1ec9a29b0ef1084edadfeaa649ab7d8 = $(`<div id=&quot;html_f1ec9a29b0ef1084edadfeaa649ab7d8&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>PACAEMBU B/C</div>`)[0];
+                popup_91e770264bf3c91b44ab30c126451a60.setContent(html_f1ec9a29b0ef1084edadfeaa649ab7d8);
+            
+        
+
+        marker_9e4e0fd94691be31b5f8a68e9e1d49c7.bindPopup(popup_91e770264bf3c91b44ab30c126451a60)
+        ;
+
+        
+    
+    
+            var marker_106c52d036ada42446e02e3b20293d97 = L.marker(
+                [-23.536318, -46.651201],
+                {
+}
+            ).addTo(map_069f863600efbb711bd4d72a98537802);
+        
+    
+        var popup_69d6ce207a230e58f9f2d37f76de14e0 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_2faa87f068863532876f57ffb895535a = $(`<div id=&quot;html_2faa87f068863532876f57ffb895535a&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>NOTHMANN C/B</div>`)[0];
+                popup_69d6ce207a230e58f9f2d37f76de14e0.setContent(html_2faa87f068863532876f57ffb895535a);
+            
+        
+
+        marker_106c52d036ada42446e02e3b20293d97.bindPopup(popup_69d6ce207a230e58f9f2d37f76de14e0)
+        ;
+
+        
+    
+</script>
+</html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
+</div>
+</div>
+<p>Posição do ônibus em Tempo Real</p>
+<div id="80be3ceb" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>posicoes <span class="op">=</span> s.get(<span class="st">"http://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha?codigoLinha=2506"</span>).json()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">"vs"</span> <span class="kw">in</span> posicoes:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Total de ônibus em movimento:"</span>, <span class="bu">len</span>(posicoes[<span class="st">"vs"</span>]))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Primeiros ônibus:"</span>, posicoes[<span class="st">"vs"</span>][:<span class="dv">3</span>])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Nenhum ônibus encontrado em tempo real"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total de ônibus em movimento: 4
+Primeiros ônibus: [{'p': '12685', 'a': True, 'ta': '2025-11-23T16:58:27Z', 'py': -23.547649, 'px': -46.641011500000005, 'sv': None, 'is': None}, {'p': '12608', 'a': True, 'ta': '2025-11-23T16:58:35Z', 'py': -23.520449499999998, 'px': -46.6996115, 'sv': None, 'is': None}, {'p': '12613', 'a': True, 'ta': '2025-11-23T16:58:40Z', 'py': -23.526304500000002, 'px': -46.6742105, 'sv': None, 'is': None}]</code></pre>
+</div>
+</div>
+<p>Mapa com Parada e Onibus em Tempo Real</p>
+<div id="c76fdb20" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> paradas <span class="kw">and</span> <span class="st">"vs"</span> <span class="kw">in</span> posicoes:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> Map(location<span class="op">=</span>[paradas[<span class="dv">0</span>][<span class="st">"py"</span>], paradas[<span class="dv">0</span>][<span class="st">"px"</span>]], zoom_start<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Paradas (azul)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> paradas:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        Marker(location<span class="op">=</span>[p[<span class="st">"py"</span>], p[<span class="st">"px"</span>]], popup<span class="op">=</span>p[<span class="st">"np"</span>]).add_to(m)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ônibus em tempo real (vermelho)</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> v <span class="kw">in</span> posicoes[<span class="st">"vs"</span>]:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        Marker(location<span class="op">=</span>[v[<span class="st">"py"</span>], v[<span class="st">"px"</span>]], popup<span class="op">=</span><span class="ss">f"Ônibus </span><span class="sc">{</span>v[<span class="st">'p'</span>]<span class="sc">}</span><span class="ss">"</span>).add_to(m)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mostrar mapa diretamente no Preview</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    display(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe srcdoc="<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; />
+    <script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;></script>
+    <script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;></script>
+    <script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;></script>
+    <script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;></script>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/>
+    
+            <meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; />
+            <style>
+                #map_e847f61870ed234107f5d938f5391985 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class=&quot;folium-map&quot; id=&quot;map_e847f61870ed234107f5d938f5391985&quot; ></div>
+        
+</body>
+<script>
+    
+    
+            var map_e847f61870ed234107f5d938f5391985 = L.map(
+                &quot;map_e847f61870ed234107f5d938f5391985&quot;,
+                {
+                    center: [-23.534564, -46.654302],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 14,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_b6e76f0b67c280edf1a42458961964b7 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            tile_layer_b6e76f0b67c280edf1a42458961964b7.addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+            var marker_f9e1acda9a1e584551dad79e301a523b = L.marker(
+                [-23.534564, -46.654302],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_2a7ff54ea09406651723b4610ce65d0f = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_f34a0d505fc15548c6afa4464d1c6431 = $(`<div id=&quot;html_f34a0d505fc15548c6afa4464d1c6431&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>ANGELICA B/C</div>`)[0];
+                popup_2a7ff54ea09406651723b4610ce65d0f.setContent(html_f34a0d505fc15548c6afa4464d1c6431);
+            
+        
+
+        marker_f9e1acda9a1e584551dad79e301a523b.bindPopup(popup_2a7ff54ea09406651723b4610ce65d0f)
+        ;
+
+        
+    
+    
+            var marker_825ecc224debfb77c397b40f22f01d79 = L.marker(
+                [-23.525799, -46.679251],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_7895043b00f94c5954290d4ef9015ae3 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_c0ac0163a6833bf16937c8b871a1c1cc = $(`<div id=&quot;html_c0ac0163a6833bf16937c8b871a1c1cc&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>PARADA PALMEIRAS B/C</div>`)[0];
+                popup_7895043b00f94c5954290d4ef9015ae3.setContent(html_c0ac0163a6833bf16937c8b871a1c1cc);
+            
+        
+
+        marker_825ecc224debfb77c397b40f22f01d79.bindPopup(popup_7895043b00f94c5954290d4ef9015ae3)
+        ;
+
+        
+    
+    
+            var marker_f08947e6657c4b60234622212d73d67f = L.marker(
+                [-23.526523, -46.673588],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_8c95cea7bb5b307a3733536cd89dec41 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_3d5df941eed071a6d5dd05da893273d3 = $(`<div id=&quot;html_3d5df941eed071a6d5dd05da893273d3&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>ANTARTICA B/C</div>`)[0];
+                popup_8c95cea7bb5b307a3733536cd89dec41.setContent(html_3d5df941eed071a6d5dd05da893273d3);
+            
+        
+
+        marker_f08947e6657c4b60234622212d73d67f.bindPopup(popup_8c95cea7bb5b307a3733536cd89dec41)
+        ;
+
+        
+    
+    
+            var marker_da36aba174190fb1dcbf01e922d2c87c = L.marker(
+                [-23.528131, -46.670652],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_50f194f2f8d14dfb0e70ed3b3d98c201 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_22511393f963fc3c3fe712cdb9930dc9 = $(`<div id=&quot;html_22511393f963fc3c3fe712cdb9930dc9&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>BABY BARIONY B/C</div>`)[0];
+                popup_50f194f2f8d14dfb0e70ed3b3d98c201.setContent(html_22511393f963fc3c3fe712cdb9930dc9);
+            
+        
+
+        marker_da36aba174190fb1dcbf01e922d2c87c.bindPopup(popup_50f194f2f8d14dfb0e70ed3b3d98c201)
+        ;
+
+        
+    
+    
+            var marker_2d998865aa7743bc35901aa372c9c91b = L.marker(
+                [-23.53021, -46.6669],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_ec4ea3ae04c219c9fa360df2e36f7e70 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_819fdc73731c4998473dcd04cf8d2dee = $(`<div id=&quot;html_819fdc73731c4998473dcd04cf8d2dee&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>PQ. DA ÁGUA BRANCA B/C</div>`)[0];
+                popup_ec4ea3ae04c219c9fa360df2e36f7e70.setContent(html_819fdc73731c4998473dcd04cf8d2dee);
+            
+        
+
+        marker_2d998865aa7743bc35901aa372c9c91b.bindPopup(popup_ec4ea3ae04c219c9fa360df2e36f7e70)
+        ;
+
+        
+    
+    
+            var marker_490497a872d59d14c00f208a2b7cd208 = L.marker(
+                [-23.52494, -46.698995],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_48c906179281f9dafa8ae07d1d362ecd = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_e19e3ea213c405049b93b5dd9c0e6d24 = $(`<div id=&quot;html_e19e3ea213c405049b93b5dd9c0e6d24&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>SCIPIAO B/C</div>`)[0];
+                popup_48c906179281f9dafa8ae07d1d362ecd.setContent(html_e19e3ea213c405049b93b5dd9c0e6d24);
+            
+        
+
+        marker_490497a872d59d14c00f208a2b7cd208.bindPopup(popup_48c906179281f9dafa8ae07d1d362ecd)
+        ;
+
+        
+    
+    
+            var marker_356fb35f39a7c26548630645738b61bc = L.marker(
+                [-23.524994, -46.695297],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_cf718749779993e05995afb0ad864294 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_b100bff6a46a2f39cbff54e82f1fb5c6 = $(`<div id=&quot;html_b100bff6a46a2f39cbff54e82f1fb5c6&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>VESPASIANO B/C</div>`)[0];
+                popup_cf718749779993e05995afb0ad864294.setContent(html_b100bff6a46a2f39cbff54e82f1fb5c6);
+            
+        
+
+        marker_356fb35f39a7c26548630645738b61bc.bindPopup(popup_cf718749779993e05995afb0ad864294)
+        ;
+
+        
+    
+    
+            var marker_ec634afe2dd45b6b55376222f3ef276f = L.marker(
+                [-23.525029, -46.690074],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_ae08394fe1b3dcfe92cfcfb29a6fe0c3 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_835b172e1b596c722cbc9f8b6488dcbe = $(`<div id=&quot;html_835b172e1b596c722cbc9f8b6488dcbe&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>CORNELIA</div>`)[0];
+                popup_ae08394fe1b3dcfe92cfcfb29a6fe0c3.setContent(html_835b172e1b596c722cbc9f8b6488dcbe);
+            
+        
+
+        marker_ec634afe2dd45b6b55376222f3ef276f.bindPopup(popup_ae08394fe1b3dcfe92cfcfb29a6fe0c3)
+        ;
+
+        
+    
+    
+            var marker_16545b99d54ea3a71ccd4ed8e6bf5e9d = L.marker(
+                [-23.523407, -46.700541],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_304887d3bd29801769a6f86042744d9e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_c9738a7bfde72c2f8311e5d68df9ba1b = $(`<div id=&quot;html_c9738a7bfde72c2f8311e5d68df9ba1b&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>CATAO B/C</div>`)[0];
+                popup_304887d3bd29801769a6f86042744d9e.setContent(html_c9738a7bfde72c2f8311e5d68df9ba1b);
+            
+        
+
+        marker_16545b99d54ea3a71ccd4ed8e6bf5e9d.bindPopup(popup_304887d3bd29801769a6f86042744d9e)
+        ;
+
+        
+    
+    
+            var marker_ceca366baa182d3ded45398e392264a3 = L.marker(
+                [-23.52517, -46.683408],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_94d8ab5305a11682e652a18733ecf985 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_7ec1f6540c64d41c42c9cf95128eec5e = $(`<div id=&quot;html_7ec1f6540c64d41c42c9cf95128eec5e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>SESC POMPEIA B/C</div>`)[0];
+                popup_94d8ab5305a11682e652a18733ecf985.setContent(html_7ec1f6540c64d41c42c9cf95128eec5e);
+            
+        
+
+        marker_ceca366baa182d3ded45398e392264a3.bindPopup(popup_94d8ab5305a11682e652a18733ecf985)
+        ;
+
+        
+    
+    
+            var marker_7c17e94b76b32699bbbdb1a1bb79dbf7 = L.marker(
+                [-23.540545, -46.643624],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_0c2c6977dad664ccc56c8aa912a423be = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_3e9386b22b6db963c95e2b4df519f584 = $(`<div id=&quot;html_3e9386b22b6db963c95e2b4df519f584&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>VITORIA B/C</div>`)[0];
+                popup_0c2c6977dad664ccc56c8aa912a423be.setContent(html_3e9386b22b6db963c95e2b4df519f584);
+            
+        
+
+        marker_7c17e94b76b32699bbbdb1a1bb79dbf7.bindPopup(popup_0c2c6977dad664ccc56c8aa912a423be)
+        ;
+
+        
+    
+    
+            var marker_68a549e6bd5d1ae272e713c553d1db0e = L.marker(
+                [-23.532847, -46.657404],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_58c1f67236defc7391d44ceacc3e9961 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_0a1eadb3260ec2a67c6eb0de9b32a1bd = $(`<div id=&quot;html_0a1eadb3260ec2a67c6eb0de9b32a1bd&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>ROSA E SILVA C/B</div>`)[0];
+                popup_58c1f67236defc7391d44ceacc3e9961.setContent(html_0a1eadb3260ec2a67c6eb0de9b32a1bd);
+            
+        
+
+        marker_68a549e6bd5d1ae272e713c553d1db0e.bindPopup(popup_58c1f67236defc7391d44ceacc3e9961)
+        ;
+
+        
+    
+    
+            var marker_e7e518be96c2d3bb850a92dca7e07d5c = L.marker(
+                [-23.538708, -46.646888],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_fb4809ed2094f2e4c484c73a19abcf7d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_86d920fe7974284b32ecfc20d693ca6b = $(`<div id=&quot;html_86d920fe7974284b32ecfc20d693ca6b&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>ANA CINTRA B/C</div>`)[0];
+                popup_fb4809ed2094f2e4c484c73a19abcf7d.setContent(html_86d920fe7974284b32ecfc20d693ca6b);
+            
+        
+
+        marker_e7e518be96c2d3bb850a92dca7e07d5c.bindPopup(popup_fb4809ed2094f2e4c484c73a19abcf7d)
+        ;
+
+        
+    
+    
+            var marker_92c431b3b20fbed45e77a574d6268e1c = L.marker(
+                [-23.532068, -46.660957],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_e0951110de349e840d2562c63c98eb02 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_fad0759ea859bb588fc70191339995d7 = $(`<div id=&quot;html_fad0759ea859bb588fc70191339995d7&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>PACAEMBU B/C</div>`)[0];
+                popup_e0951110de349e840d2562c63c98eb02.setContent(html_fad0759ea859bb588fc70191339995d7);
+            
+        
+
+        marker_92c431b3b20fbed45e77a574d6268e1c.bindPopup(popup_e0951110de349e840d2562c63c98eb02)
+        ;
+
+        
+    
+    
+            var marker_aac18ca1193618566aaa274f7eae92d7 = L.marker(
+                [-23.536318, -46.651201],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_75968d68ca486867b341c6c90c243f8e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_e1463bb9a6b69077b636ee74f9d88137 = $(`<div id=&quot;html_e1463bb9a6b69077b636ee74f9d88137&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>NOTHMANN C/B</div>`)[0];
+                popup_75968d68ca486867b341c6c90c243f8e.setContent(html_e1463bb9a6b69077b636ee74f9d88137);
+            
+        
+
+        marker_aac18ca1193618566aaa274f7eae92d7.bindPopup(popup_75968d68ca486867b341c6c90c243f8e)
+        ;
+
+        
+    
+    
+            var marker_778e2fdfa7ceb5be4b1e54a4c43b79ab = L.marker(
+                [-23.547649, -46.641011500000005],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_76fc3bfa6d726af6d32000818f106337 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_472cecc2dc3b791c98f247baeb1742d5 = $(`<div id=&quot;html_472cecc2dc3b791c98f247baeb1742d5&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>Ônibus 12685</div>`)[0];
+                popup_76fc3bfa6d726af6d32000818f106337.setContent(html_472cecc2dc3b791c98f247baeb1742d5);
+            
+        
+
+        marker_778e2fdfa7ceb5be4b1e54a4c43b79ab.bindPopup(popup_76fc3bfa6d726af6d32000818f106337)
+        ;
+
+        
+    
+    
+            var marker_c78b597f231a7d72e084ee5bb413c0ec = L.marker(
+                [-23.520449499999998, -46.6996115],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_b13c6c35aa7a0f9f26e596bf84b65cf1 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_1be0c97ad885e4f77145131304b1322e = $(`<div id=&quot;html_1be0c97ad885e4f77145131304b1322e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>Ônibus 12608</div>`)[0];
+                popup_b13c6c35aa7a0f9f26e596bf84b65cf1.setContent(html_1be0c97ad885e4f77145131304b1322e);
+            
+        
+
+        marker_c78b597f231a7d72e084ee5bb413c0ec.bindPopup(popup_b13c6c35aa7a0f9f26e596bf84b65cf1)
+        ;
+
+        
+    
+    
+            var marker_9d10daaacc4fbc6f7926a31df8179ec1 = L.marker(
+                [-23.526304500000002, -46.6742105],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_353319792114786a2c958a3bba529001 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_7942029028ee448439ad8c9c8d85ede4 = $(`<div id=&quot;html_7942029028ee448439ad8c9c8d85ede4&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>Ônibus 12613</div>`)[0];
+                popup_353319792114786a2c958a3bba529001.setContent(html_7942029028ee448439ad8c9c8d85ede4);
+            
+        
+
+        marker_9d10daaacc4fbc6f7926a31df8179ec1.bindPopup(popup_353319792114786a2c958a3bba529001)
+        ;
+
+        
+    
+    
+            var marker_93a411c3c12f838ed44f0a2fd2376a93 = L.marker(
+                [-23.542720250000002, -46.643174625],
+                {
+}
+            ).addTo(map_e847f61870ed234107f5d938f5391985);
+        
+    
+        var popup_23f40073931c6f8d59341b1ca588ea6d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+        
+            
+                var html_34e3b74c7cdf79544e9175e2fe1a9853 = $(`<div id=&quot;html_34e3b74c7cdf79544e9175e2fe1a9853&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;>Ônibus 12678</div>`)[0];
+                popup_23f40073931c6f8d59341b1ca588ea6d.setContent(html_34e3b74c7cdf79544e9175e2fe1a9853);
+            
+        
+
+        marker_93a411c3c12f838ed44f0a2fd2376a93.bindPopup(popup_23f40073931c6f8d59341b1ca588ea6d)
+        ;
+
+        
+    
+</script>
+</html>" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""></iframe></div></div>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/your-website-url\.example\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
